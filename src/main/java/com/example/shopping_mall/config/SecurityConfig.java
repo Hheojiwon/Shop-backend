@@ -39,8 +39,7 @@ public class SecurityConfig {
                         .requestMatchers("/members/sign-up").permitAll() // 회원가입도 인증 없이 허용하고 싶다면 추가
                         .anyRequest().authenticated() // 그 외 모든 요청은 인증 필요
                 )
-                .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class)
-                .build();
+                .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 
