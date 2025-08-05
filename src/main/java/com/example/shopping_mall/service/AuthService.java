@@ -2,10 +2,10 @@ package com.example.shopping_mall.service;
 
 import com.example.shopping_mall.config.jwt.JwtToken;
 import com.example.shopping_mall.config.jwt.JwtTokenProvider;
-import com.example.shopping_mall.domain.User;
+import com.example.shopping_mall.domain.Member;
 import com.example.shopping_mall.dto.LoginRequest;
 import com.example.shopping_mall.dto.SignRequest;
-import com.example.shopping_mall.repository.UserRepository;
+import com.example.shopping_mall.repository.MemberRepository;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -15,20 +15,20 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Component
-public class UserService {
+public class AuthService {
 
-    private final UserRepository userRepository;
+    private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtTokenProvider jwtTokenProvider) {
-        this.userRepository = userRepository;
+    public AuthService(MemberRepository memberRepository, PasswordEncoder passwordEncoder, JwtTokenProvider jwtTokenProvider) {
+        this.memberRepository = memberRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtTokenProvider = jwtTokenProvider;
     }
 
     public void register(SignRequest signRequest) {
-        User user = User.builder()
+        Member member = Member.builder()
                 .userId(signRequest.getUserId())
                 .password(passwordEncoder.encode(signRequest.getPassword()))
                 .name(signRequest.getName())
@@ -39,17 +39,17 @@ public class UserService {
                 .isDeleted(false)
                 .build(); // 빌더 사용
 
-        userRepository.save(user);
+        memberRepository.save(member);
     }
 
     public JwtToken login(LoginRequest loginRequest) {
-        User user = userRepository.findUserByUserId(loginRequest.getUserId())
+        Member member = memberRepository.findUserByUserId(loginRequest.getUserId())
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 ID 입니다."));
-        if (!passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
+        if (!passwordEncoder.matches(loginRequest.getPassword(), member.getPassword())) {
             throw new IllegalArgumentException("비밀번호 일치 X");
         }
         JwtToken jwtToken = jwtTokenProvider.generateToken(
-                new UsernamePasswordAuthenticationToken(user.getUserId(), null, List.of(new SimpleGrantedAuthority("ROLE_USER")))
+                new UsernamePasswordAuthenticationToken(member.getUserId(), null, List.of(new SimpleGrantedAuthority("ROLE_USER")))
         );
 
         return jwtToken;
