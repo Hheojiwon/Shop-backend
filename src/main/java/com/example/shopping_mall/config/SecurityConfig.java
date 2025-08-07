@@ -35,8 +35,9 @@ public class SecurityConfig {
                 .cors(Customizer.withDefaults())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/members/sign-in").permitAll() // 로그인 API는 인증 없이 허용
-                        .requestMatchers("/members/sign-up").permitAll() // 회원가입도 인증 없이 허용하고 싶다면 추가
+                        .requestMatchers("/auth/signup").permitAll() // 로그인 API는 인증 없이 허용
+                        .requestMatchers("/auth/signin").permitAll() // 회원가입도 인증 없이 허용하고 싶다면 추가
+                        .requestMatchers("/auth/login/kakao").permitAll()
                         .anyRequest().authenticated() // 그 외 모든 요청은 인증 필요
                 )
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
