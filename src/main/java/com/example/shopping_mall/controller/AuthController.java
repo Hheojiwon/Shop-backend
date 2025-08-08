@@ -1,9 +1,9 @@
 package com.example.shopping_mall.controller;
 
 import com.example.shopping_mall.config.jwt.JwtToken;
-import com.example.shopping_mall.dto.LoginRequest;
-import com.example.shopping_mall.dto.LoginResponse;
-import com.example.shopping_mall.dto.SignRequest;
+import com.example.shopping_mall.dto.request.LoginRequest;
+import com.example.shopping_mall.dto.response.LoginResponse;
+import com.example.shopping_mall.dto.request.SignRequest;
 import com.example.shopping_mall.service.AuthService;
 import com.example.shopping_mall.service.KakaoOauthService;
 import org.springframework.http.HttpStatus;

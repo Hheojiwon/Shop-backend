@@ -3,8 +3,8 @@ package com.example.shopping_mall.service;
 import com.example.shopping_mall.config.jwt.JwtToken;
 import com.example.shopping_mall.config.jwt.JwtTokenProvider;
 import com.example.shopping_mall.domain.Member;
-import com.example.shopping_mall.dto.LoginRequest;
-import com.example.shopping_mall.dto.SignRequest;
+import com.example.shopping_mall.dto.request.LoginRequest;
+import com.example.shopping_mall.dto.request.SignRequest;
 import com.example.shopping_mall.repository.MemberRepository;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -43,7 +43,7 @@ public class AuthService {
     }
 
     public JwtToken login(LoginRequest loginRequest) {
-        Member member = memberRepository.findUserByUserId(loginRequest.getUserId())
+        Member member = memberRepository.findByUserId(loginRequest.getUserId())
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 ID 입니다."));
         if (!passwordEncoder.matches(loginRequest.getPassword(), member.getPassword())) {
             throw new IllegalArgumentException("비밀번호 일치 X");
