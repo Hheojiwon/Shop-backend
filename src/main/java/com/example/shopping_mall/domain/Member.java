@@ -1,10 +1,7 @@
 package com.example.shopping_mall.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Column;
+import com.example.shopping_mall.domain.type.Platform;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Generated;
@@ -28,8 +25,23 @@ public class Member {
     @Column(name = "user_id", unique = true, length = 30)
     private String userId;
 
+    @Column(unique = true)
+    private String kakaoId;
+
+    @Column(unique = true)
+    private String email;
+
+    @Column(length = 50)
+    private String nickname;
+
     @Column(unique = true, length = 20)
     private String password;
+
+    @Column(unique = true)
+    private String memberNumber;
+
+    @Enumerated(EnumType.STRING)
+    private Platform platform;
 
     @Column
     private String name;
