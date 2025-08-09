@@ -1,6 +1,7 @@
 package com.example.shopping_mall.domain;
 
 import com.example.shopping_mall.domain.type.Platform;
+import com.example.shopping_mall.domain.type.Role;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -33,6 +34,9 @@ public class Member {
 
     @Column(length = 50)
     private String nickname;
+
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
     @Column(unique = true, length = 20)
     private String password;
