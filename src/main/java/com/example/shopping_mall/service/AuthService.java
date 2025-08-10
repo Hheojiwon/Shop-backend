@@ -51,7 +51,14 @@ public class AuthService {
         JwtToken jwtToken = jwtTokenProvider.generateToken(
                 new UsernamePasswordAuthenticationToken(member.getUserId(), null, List.of(new SimpleGrantedAuthority("ROLE_USER")))
         );
-
         return jwtToken;
+    }
+
+    public void deleteAccount(String userId) {
+        Member member = memberRepository.findByUserId(userId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다."));
+
+        member.setIsDeleted();
+        memberRepository.save(member);
     }
 }

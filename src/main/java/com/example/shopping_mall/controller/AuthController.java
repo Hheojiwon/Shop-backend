@@ -4,10 +4,12 @@ import com.example.shopping_mall.config.jwt.JwtToken;
 import com.example.shopping_mall.dto.request.LoginRequest;
 import com.example.shopping_mall.dto.response.LoginResponse;
 import com.example.shopping_mall.dto.request.SignRequest;
+import com.example.shopping_mall.security.CustomUser;
 import com.example.shopping_mall.service.AuthService;
 import com.example.shopping_mall.service.KakaoOauthService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 
@@ -42,5 +44,15 @@ public class AuthController {
         return ResponseEntity.status(HttpStatus.FOUND)
                 .header("Location", uri).build();
     }
+
+    @DeleteMapping("/delete")
+    public ResponseEntity<ApiResponse<String>> deleteAccount(@AuthenticationPrincipal CustomUser customUser) {
+        String userId = customUser.getUserId(); // 로그인된 회원의 userId
+        authService.deleteAccount(userId);
+
+        ApiResponse<String> response = new ApiResponse<>(200, "회원 탈퇴 성공", null);
+        return ResponseEntity.ok(response);
+    }
+
 
 }

@@ -64,4 +64,8 @@ public class Member {
 
     @Column(name = "is_deleted")
     private boolean isDeleted;
+
+    public void setIsDeleted() {
+        this.isDeleted = true;
+    }
 }
