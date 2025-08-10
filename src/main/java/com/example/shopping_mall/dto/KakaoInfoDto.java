@@ -17,11 +17,12 @@ public class KakaoInfoDto {
     @Getter
     public static class KakaoAccount {
         private Profile profile;
+        private String email;
 
+        @JsonIgnoreProperties(ignoreUnknown = true)
         @Getter
         public static class Profile {
             private String nickname;
-            private String email;
         }
     }
 }

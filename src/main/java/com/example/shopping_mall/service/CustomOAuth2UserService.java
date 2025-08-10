@@ -32,7 +32,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
         String kakaoId = String.valueOf(kakaoInfo.getId());
         String nickname = kakaoInfo.getKakaoAccount().getProfile().getNickname();
-        String email = kakaoInfo.getKakaoAccount().getProfile().getEmail();
+        String email = kakaoInfo.getKakaoAccount().getEmail();
 
         Member member = memberRepository.findByKakaoId(kakaoId)
                 .orElseGet(() -> memberRepository.save(Member.builder()
