@@ -12,10 +12,8 @@ import com.example.shopping_mall.service.KakaoOauthService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 
-@Component
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
@@ -42,7 +40,7 @@ public class AuthController {
         LoginResponse loginResponse = new LoginResponse(token.getAccessToken(), token.getRefreshToken(), "로그인 성공");
         return ResponseEntity
                 .status(ApiStatus.OK.getCode())
-                .body(ApiResponse.res(ApiStatus.OK.getCode(), null, loginResponse));
+                .body(ApiResponse.res(ApiStatus.OK.getCode(), "로그인 성공", loginResponse));
     }
 
     @GetMapping("/kakao")

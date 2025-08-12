@@ -3,6 +3,7 @@ package com.example.shopping_mall.config;
 import com.example.shopping_mall.config.jwt.JwtAuthenticationFilter;
 import com.example.shopping_mall.config.jwt.JwtTokenProvider;
 import com.example.shopping_mall.service.CustomOAuth2UserService;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
@@ -42,16 +43,17 @@ public class SecurityConfig {
                 .cors(Customizer.withDefaults())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/signup").permitAll() // 로그인 API는 인증 없이 허용
-                        .requestMatchers("/auth/signin").permitAll() // 회원가입 API 인증 없이 허용
-                        .requestMatchers("/auth/login/kakao").permitAll() //카카오 로그인 리다이렉션
+                        .requestMatchers("/auth/**").permitAll() // 로그인 API는 인증 없이 허용
+                        .requestMatchers("/mail/send").permitAll()
                         .anyRequest().authenticated() // 그 외 모든 요청은 인증 필요
                 )
                 .oauth2Login(oauth2 -> oauth2
+                        .loginPage("/auth/login") // 인증 필요 시 카카오 로그인이 아니라 /auth/login로 유도
                         .userInfoEndpoint(userInfo -> userInfo
-                                .userService(customOAuth2UserService) // OAuth2 로그인 설정 추가
+                                .userService(customOAuth2UserService)
                         )
                 )
+
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
