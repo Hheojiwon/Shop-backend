@@ -3,7 +3,7 @@ package com.example.shopping_mall.config;
 import com.example.shopping_mall.config.jwt.JwtAuthenticationFilter;
 import com.example.shopping_mall.config.jwt.JwtTokenProvider;
 import com.example.shopping_mall.service.CustomOAuth2UserService;
-import jakarta.servlet.http.HttpServletResponse;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
@@ -44,7 +44,7 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/auth/**").permitAll() // 로그인 API는 인증 없이 허용
-                        .requestMatchers("/mail/send").permitAll()
+                        .requestMatchers("/mail/**").permitAll()
                         .anyRequest().authenticated() // 그 외 모든 요청은 인증 필요
                 )
                 .oauth2Login(oauth2 -> oauth2
