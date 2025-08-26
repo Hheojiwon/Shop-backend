@@ -2,16 +2,18 @@ package com.example.shopping_mall.controller;
 
 import com.example.shopping_mall.config.jwt.JwtToken;
 import com.example.shopping_mall.dto.request.LoginRequest;
+import com.example.shopping_mall.dto.response.ApiResponse;
+import com.example.shopping_mall.dto.response.ApiStatus;
 import com.example.shopping_mall.dto.response.LoginResponse;
 import com.example.shopping_mall.dto.request.SignRequest;
+import com.example.shopping_mall.security.CustomUser;
 import com.example.shopping_mall.service.AuthService;
 import com.example.shopping_mall.service.KakaoOauthService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Component;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-@Component
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
@@ -25,15 +27,20 @@ public class AuthController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<String> signUp(@RequestBody SignRequest signRequest) {
+    public ResponseEntity<ApiResponse<Void>> signUp(@RequestBody SignRequest signRequest) {
         authService.register(signRequest);
-        return ResponseEntity.status(HttpStatus.CREATED).body("회원가입 성공");
+        return ResponseEntity
+                .status(ApiStatus.CREATED.getCode())
+                .body(ApiResponse.res(ApiStatus.CREATED.getCode(), "회원가입 성공"));
     }
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<ApiResponse<LoginResponse>> login(@RequestBody LoginRequest loginRequest) {
         JwtToken token = authService.login(loginRequest);
-        return ResponseEntity.ok(new LoginResponse(token.getAccessToken(), token.getRefreshToken(), "로그인 성공"));
+        LoginResponse loginResponse = new LoginResponse(token.getAccessToken(), token.getRefreshToken(), "로그인 성공");
+        return ResponseEntity
+                .status(ApiStatus.OK.getCode())
+                .body(ApiResponse.res(ApiStatus.OK.getCode(), "로그인 성공", loginResponse));
     }
 
     @GetMapping("/kakao")
@@ -43,4 +50,13 @@ public class AuthController {
                 .header("Location", uri).build();
     }
 
+    @DeleteMapping("/delete")
+    public ResponseEntity<ApiResponse<Void>> deleteAccount(@AuthenticationPrincipal CustomUser customUser) {
+        String userId = customUser.getUserId(); // 로그인된 회원의 userId
+        authService.deleteAccount(userId);
+
+        return ResponseEntity.status(ApiStatus.OK.getCode())
+                .body(ApiResponse.res(ApiStatus.OK.getCode(),
+                        "회원 탈퇴 성공"));
+    }
 }
