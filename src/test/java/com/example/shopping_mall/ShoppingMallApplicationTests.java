@@ -11,5 +11,4 @@ class ShoppingMallApplicationTests {
 	@Test
 	void contextLoads() {
 	}
-
 }
