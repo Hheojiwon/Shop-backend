@@ -25,16 +25,15 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@af1da67850ed9a4cedd57bfd976089dd991e2582 # v4.0.0
 
-      # MySQL service 시작
       - name: Start MySQL service
         uses: mirromutth/mysql-action@v1.1
         with:
-          mysql-version: '8.0'
-          mysql-database: ${{ secrets.MYSQL_DB }}
-          mysql-user: ${{ secrets.MYSQL_USER }}
-          mysql-password: ${{ secrets.MYSQL_PASSWORD }}
+          mysql version: '8.0'
+          mysql database: ${{ secrets.MYSQL_DB }}
+          mysql user: ${{ secrets.MYSQL_USER }}
+          mysql password: ${{ secrets.MYSQL_PASSWORD }}
+          mysql root password: ${{ secrets.MYSQL_PASSWORD }}}
 
-      # 테스트용 DB 생성 보장
       - name: Create test database
         run: |
           sudo apt-get install -y mysql-client
