@@ -29,10 +29,10 @@ jobs:
       - name: Start MySQL service
         uses: mirromutth/mysql-action@v1.1
         with:
-          mysql version: '8.0'
-          mysql database: ${{ secrets.MYSQL_DB }}
-          mysql user: ${{ secrets.MYSQL_USER }}
-          mysql password: ${{ secrets.MYSQL_PASSWORD }}
+          mysql-version: '8.0'
+          mysql-database: ${{ secrets.MYSQL_DB }}
+          mysql-user: ${{ secrets.MYSQL_USER }}
+          mysql-password: ${{ secrets.MYSQL_PASSWORD }}
 
       # 테스트용 DB 생성 보장
       - name: Create test database
